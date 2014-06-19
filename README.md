@@ -7,12 +7,13 @@ By adding this to your to your activerecord project, you will get the class meth
 You can then use this like `Model.cache_key` which will return the MD5 sum of the maximum updated_at timestamp plus the count of records in that model's table.
 
 I use this method in a few small areas in a project like so:
+
     Rails.cache.fetch ['admin', 'products', Product.cache_key] do
       ....
     end
 
 
-I recommend that you use this sparingly as it is NOT an efficient way of caching!
+I recommend that you use this sparingly as it is NOT an efficient way of cache expiration!
 
 
 ## Installation
