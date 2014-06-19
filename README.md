@@ -32,7 +32,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Simply include the gem and then wherever you need to expire an entire table, simple check the Model.cache_key
 
 ## Contributing
 
