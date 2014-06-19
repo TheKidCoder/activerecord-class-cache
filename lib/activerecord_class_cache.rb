@@ -1,13 +1,19 @@
 require "activerecord_class_cache/version"
+require "activerecord_class_cache/cache_key"
 
-mmodule ActiverecordClassCache
-  extend ActiveSupport::Concern
+module ActiverecordClassCache
+  begin
+    require 'rails'
 
-  module ClassMethods
-    def cache_key
-      Digest::MD5.hexdigest "#{maximum(:updated_at).try(:to_i)}-#{count}"
+    class Railtie < Rails::Railtie
+      initializer 'activerecord_class_cache.insert_into_active_record' do
+        ActiveSupport.on_load :active_record do
+          ActiveRecord::Base.send(:include, ::ActiverecordClassCache::CacheKey)
+        end
+      end
     end
+  rescue LoadError
+    puts "LOAD ERROR"
+    ActiveRecord::Base.send(:include, ::ActiverecordClassCache::CacheKey) if defined?(ActiveRecord)
   end
 end
-
-ActiveRecord::Base.send(:include, ActiveRecordExtension)
